@@ -2,3 +2,4 @@
 2024-06-28T09:27:57  fix: works on my machine (TM)
 2024-07-17T16:44:04  perf(fixtures): improve error messages with context
 2024-08-07T11:01:11  style(parser): add a --quiet mode
+2024-08-26T18:18:18  ci(output): add pagination to large reports
