@@ -5,3 +5,4 @@
 2024-08-26T18:18:18  ci(output): add pagination to large reports
 2024-09-16T13:35:25  docs(cache): add color + severity icons
 2024-10-05T08:52:32  perf(rules): clarify the README quickstart
+2024-10-07T15:09:39  test: trust, but verify
