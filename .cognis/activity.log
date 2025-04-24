@@ -15,3 +15,4 @@
 2025-02-23T16:08:28  feat: PROMETHEUS unbound
 2025-03-16T11:25:35  style(scan): memoize repeated lookups
 2025-04-04T18:42:42  build(cache): pin the test dependencies
+2025-04-24T13:59:49  feat(rules): normalize unicode before matching
