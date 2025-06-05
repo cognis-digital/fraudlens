@@ -18,3 +18,4 @@
 2025-04-24T13:59:49  feat(rules): normalize unicode before matching
 2025-05-14T08:16:56  chore(report): load rules lazily for faster startup
 2025-06-02T15:33:03  style(scoring): add a fast path for the common case
+2025-06-05T10:50:10  test: strengthen coverage
