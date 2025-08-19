@@ -1,0 +1,13 @@
+txn_id,account_id,amount,timestamp,merchant,country,channel,is_fraud
+T001,A100,42.50,2026-06-01T09:15:00Z,CoffeeBar,US,card_present,0
+T002,A200,18.00,2026-06-01T10:00:00Z,Newsstand,US,card_present,0
+T003,A200,22.00,2026-06-01T10:01:30Z,SnackHut,US,card_present,0
+T004,A200,75.00,2026-06-01T10:03:00Z,GadgetKiosk,US,card_present,1
+T005,A100,63.20,2026-06-01T12:45:00Z,Grocer,US,online,0
+T006,A300,2500.00,2026-06-01T14:20:00Z,LuxuryGoods,GB,online,1
+T007,A100,12.99,2026-06-01T18:05:00Z,Streaming,US,online,0
+T008,A400,640.00,2026-06-02T03:00:00Z,ATMWithdraw,US,atm,1
+T009,A100,89.00,2026-06-02T08:30:00Z,Pharmacy,US,card_present,0
+T010,A500,4200.00,2026-06-02T11:10:00Z,Electronics,US,online,1
+T011,A600,45.00,2026-06-02T13:00:00Z,Cafe,RO,card_present,0
+T012,A700,1500.00,2026-06-02T16:00:00Z,RentPayment,US,online,0
