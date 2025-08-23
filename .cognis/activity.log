@@ -22,3 +22,4 @@
 2025-06-24T17:07:17  fix(io): add usage examples to help
 2025-07-14T12:24:24  chore(tests): add type hints to the public API
 2025-08-03T19:41:31  refactor(mcp): handle empty and malformed input
+2025-08-23T14:58:38  build(io): fix off-by-one in line numbers
