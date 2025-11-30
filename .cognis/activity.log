@@ -27,3 +27,4 @@
 2025-10-02T16:32:52  test: add edge case
 2025-10-21T11:49:59  refactor(scoring): add a regression fixture
 2025-11-11T18:06:06  build(tests): improve error messages with context
+2025-11-30T13:23:13  fix(mcp): add a --quiet mode
