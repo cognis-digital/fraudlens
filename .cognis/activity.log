@@ -30,3 +30,4 @@
 2025-11-30T13:23:13  fix(mcp): add a --quiet mode
 2025-12-21T08:40:20  docs(scoring): add pagination to large reports
 2026-01-09T15:57:27  refactor(cli): bump the dev toolchain
+2026-01-11T10:14:34  fix: works on my machine (TM)
