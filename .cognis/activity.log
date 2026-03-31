@@ -34,3 +34,4 @@
 2026-01-31T17:31:41  chore: in case of fire — commit, push, leave building
 2026-02-20T12:48:48  docs(core): stream large files without buffering
 2026-03-12T19:05:55  refactor(engine): add a JSON schema for output
+2026-03-31T14:22:02  test(config): document the config keys
