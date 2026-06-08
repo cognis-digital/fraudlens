@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: fraudlens, labels: { app: fraudlens } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: fraudlens } }
+  template:
+    metadata: { labels: { app: fraudlens } }
+    spec:
+      containers:
+        - name: fraudlens
+          image: ghcr.io/cognis-digital/fraudlens:latest
+          ports: [{ containerPort: 8000 }]
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits: { cpu: "500m", memory: "256Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: fraudlens }
+spec:
+  selector: { app: fraudlens }
+  ports: [{ port: 80, targetPort: 8000 }]
