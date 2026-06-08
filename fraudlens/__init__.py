@@ -1,2 +1,11 @@
-"""FRAUDLENS — Replays a stream of transactions against pluggable fraud rules and ML scorers, emitting precision/recall and alert volume from the terminal."""
-__version__ = "0.1.0"
+"""fraudlens — part of the Cognis Neural Suite."""
+try:  # re-export the tool's public API + identity from core
+    from fraudlens.core import *  # noqa: F401,F403
+except Exception:  # pragma: no cover
+    pass
+try:
+    from fraudlens.core import TOOL_NAME, TOOL_VERSION
+except Exception:  # pragma: no cover
+    TOOL_NAME = "fraudlens"
+    TOOL_VERSION = "0.1.0"
+__version__ = TOOL_VERSION
