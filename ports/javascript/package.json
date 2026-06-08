@@ -1,0 +1,10 @@
+{
+  "name": "@cognis/fraudlens",
+  "version": "0.2.0",
+  "description": "JavaScript port of fraudlens (Cognis Neural Suite)",
+  "bin": {
+    "fraudlens": "index.js"
+  },
+  "license": "LicenseRef-COCL-1.0",
+  "type": "module"
+}
