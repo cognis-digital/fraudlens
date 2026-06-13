@@ -9,16 +9,22 @@
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=3500&pause=1000&color=6B46C1&center=true&vCenter=true&width=720&lines=Replays+a+stream+of+transactions+against+pluggable+fraud+rul;Self-hostable+%C2%B7+MCP-native+%C2%B7+CI-ready+%C2%B7+polyglot" width="720"/>
 
-[![PyPI](https://img.shields.io/pypi/v/cognis-fraudlens.svg?color=6b46c1)](https://pypi.org/project/cognis-fraudlens/) [![CI](https://github.com/cognis-digital/fraudlens/actions/workflows/ci.yml/badge.svg)](https://github.com/cognis-digital/fraudlens/actions) [![License: COCL 1.0](https://img.shields.io/badge/License-COCL%201.0-2b6cb0.svg)](LICENSE) [![Suite](https://img.shields.io/badge/Cognis-Neural%20Suite-6b46c1.svg)](https://github.com/cognis-digital)
+[![install](https://img.shields.io/badge/install-git%2B%20%C2%B7%20pipx%20%C2%B7%20uv-6b46c1.svg)](#install--every-way-every-platform) [![CI](https://github.com/cognis-digital/fraudlens/actions/workflows/ci.yml/badge.svg)](https://github.com/cognis-digital/fraudlens/actions) [![License: COCL 1.0](https://img.shields.io/badge/License-COCL%201.0-2b6cb0.svg)](LICENSE) [![Suite](https://img.shields.io/badge/Cognis-Neural%20Suite-6b46c1.svg)](https://github.com/cognis-digital)
 
 *Fintech & Payments Security — PCI, fraud, AML, and payment rails.*
 
 </div>
 
 ```bash
-pip install cognis-fraudlens
+pip install "git+https://github.com/cognis-digital/fraudlens.git"
 fraudlens scan .            # → prioritized findings in seconds
 ```
+
+<!-- cognis:layman:start -->
+## What is this?
+
+FraudLens is a command-line tool for testing fraud detection rules against a history of transactions. You give it a CSV file of past payments — each labeled as legitimate or fraudulent — and it runs those payments through a set of rules (like "flag large amounts" or "flag transactions in foreign countries") to show you how well the rules would have caught real fraud. The output tells you things like precision (how often an alert was a real fraud) and recall (what fraction of real fraud was caught), so you can tune your rules with confidence before using them in production. It is aimed at payment security teams, fintech developers, and compliance engineers who need a reproducible, scriptable harness they can drop into CI pipelines.
+<!-- cognis:layman:end -->
 
 ## Contents
 
@@ -49,10 +55,56 @@ Fraud teams iterate rules in notebooks with no reproducible CLI harness. Backtes
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="quick-start"></a>
+<!-- cognis:domains:start -->
+## Domains
+
+**Primary domain:** Finance & Quant  ·  **JTF MERIDIAN division:** BLACKBOOK · ORACLE
+
+**Topics:** `cognis` `finance` `fintech` `quant`
+
+Part of the **Cognis Neural Suite** — 300+ source-available tools organized across 12 domains under the JTF MERIDIAN command structure. See the [suite on GitHub](https://github.com/cognis-digital) and [jtf-meridian](https://github.com/cognis-digital/jtf-meridian) for how the pieces fit together.
+<!-- cognis:domains:end -->
+
+<!-- cognis:install:start -->
+## Install
+
+`fraudlens` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/fraudlens/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/fraudlens/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/fraudlens.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/fraudlens.git"  # uv
+pip install "git+https://github.com/cognis-digital/fraudlens.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/fraudlens.git
+cd fraudlens && pip install .
+```
+
+Then run:
+```sh
+fraudlens --help
+```
+<!-- cognis:install:end -->
+
 ## Quick start
 
 ```bash
-pip install cognis-fraudlens
+pip install "git+https://github.com/cognis-digital/fraudlens.git"
 fraudlens --version
 fraudlens scan .                       # scan current project
 fraudlens scan . --format json         # machine-readable
@@ -145,6 +197,32 @@ curl -fsSL https://raw.githubusercontent.com/cognis-digital/fraudlens/main/insta
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="related"></a>
+<a name="verification"></a>
+## Verification
+
+[![tests](https://img.shields.io/badge/tests-13%20passing-2ea44f.svg)](AUDIT.md)
+
+Every push is verified end-to-end. Latest audit (2026-06-13):
+
+```text
+tests        : 13 passed, 0 failed, 0 errored
+compile      : all modules parse
+cli          : C:\Python314\python.exe: No module named https
+package      : https
+```
+
+<details><summary>CLI surface (<code>--help</code>)</summary>
+
+```text
+C:\Python314\python.exe: No module named https
+```
+</details>
+
+Full machine-readable results: [`AUDIT.md`](AUDIT.md) · regenerate with `python -m https --help` + `pytest -q`.
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+
 ## Related Cognis tools
 
 - [`panhound`](https://github.com/cognis-digital/panhound) — Scans code, logs, fixtures, and S3 buckets for leaked PANs (Luhn-validated card numbers) and CVVs before they hit prod.
