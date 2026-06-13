@@ -20,6 +20,43 @@ pip install cognis-fraudlens
 fraudlens scan .            # → prioritized findings in seconds
 ```
 
+## Usage — step by step
+
+1. **Install** the CLI:
+
+   ```bash
+   pipx install "git+https://github.com/cognis-digital/fraudlens.git"
+   ```
+
+2. **List** the available fraud rules, then **backtest** a labeled transaction CSV against them (primary command):
+
+   ```bash
+   fraudlens rules
+   fraudlens backtest transactions.csv
+   ```
+
+3. **Iterate on the ruleset** — enable a subset and override thresholds without editing code:
+
+   ```bash
+   fraudlens backtest transactions.csv \
+     --rules high_amount,velocity \
+     --set high_amount_threshold=500
+   ```
+
+4. **Read the output** — precision / recall / alert rate as a table, or JSON for diffing. Set gates so a regression exits non-zero:
+
+   ```bash
+   fraudlens backtest transactions.csv --format json > metrics.json
+   fraudlens backtest transactions.csv --min-recall 0.8 --max-alert-rate 0.05
+   ```
+
+5. **Automate in CI** — fail the job when a rule change drops recall or floods alerts:
+
+   ```bash
+   fraudlens backtest data/labeled.csv --min-recall 0.85 --min-precision 0.6
+   # non-zero exit => the rule change regressed
+   ```
+
 ## Contents
 
 - [Why fraudlens?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
