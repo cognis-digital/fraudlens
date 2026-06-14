@@ -160,13 +160,30 @@ def _build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _validate_gate_thresholds(args) -> Optional[str]:
+    """Return an error string if any gate threshold is out of [0, 1], else None."""
+    for name, val in [
+        ("--min-recall", args.min_recall),
+        ("--min-precision", args.min_precision),
+        ("--max-alert-rate", args.max_alert_rate),
+    ]:
+        if val is not None and not (0.0 <= val <= 1.0):
+            return f"{name} must be between 0 and 1, got {val}"
+    return None
+
+
 def _run_backtest(args) -> int:
+    gate_err = _validate_gate_thresholds(args)
+    if gate_err:
+        print(f"error: {gate_err}", file=sys.stderr)
+        return 2
+
     try:
         txns = load_transactions(args.input)
     except FileNotFoundError:
         print(f"error: file not found: {args.input}", file=sys.stderr)
         return 2
-    except ValueError as exc:
+    except (ValueError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 

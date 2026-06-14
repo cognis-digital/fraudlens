@@ -1,6 +1,8 @@
-"""FRAUDLENS MCP server — exposes scan() as an MCP tool for Cognis.Studio."""
+"""FRAUDLENS MCP server — exposes backtest() as an MCP tool for Cognis.Studio."""
 from __future__ import annotations
-from fraudlens.core import scan, to_json
+
+from fraudlens.core import backtest, build_ruleset, load_transactions, to_json
+
 
 def serve() -> int:
     """Start an MCP stdio server. Requires the optional 'mcp' extra:
@@ -14,9 +16,17 @@ def serve() -> int:
     app = FastMCP("fraudlens")
 
     @app.tool()
-    def fraudlens_scan(target: str) -> str:
-        """Replays a stream of transactions against pluggable fraud rules and ML scorers, emitting precision/recall and alert volume from the terminal.. Returns JSON findings."""
-        return to_json(scan(target))
+    def fraudlens_scan(csv_path: str) -> str:
+        """Replay a labeled transaction CSV against the default fraud ruleset.
+
+        Returns JSON with precision/recall metrics, per-rule alert counts,
+        and caught/missed/false-alarm transaction IDs.
+        """
+        try:
+            txns = load_transactions(csv_path)
+        except (FileNotFoundError, ValueError) as exc:
+            return f"error: {exc}"
+        return to_json(backtest(txns, build_ruleset()))
 
     app.run()
     return 0

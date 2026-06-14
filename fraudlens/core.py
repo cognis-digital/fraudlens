@@ -135,8 +135,14 @@ def parse_transactions(text: str) -> List[Transaction]:
         raise ValueError(f"missing required columns: {', '.join(missing)}")
 
     txns: List[Transaction] = []
+    seen_ids: set = set()
     for lineno, row in enumerate(reader, start=2):
         try:
+            is_fraud_raw = int(float(row["is_fraud"]))
+            if is_fraud_raw not in (0, 1):
+                raise ValueError(
+                    f"is_fraud must be 0 or 1, got {is_fraud_raw}"
+                )
             txn = Transaction(
                 txn_id=row["txn_id"].strip(),
                 account_id=row["account_id"].strip(),
@@ -145,19 +151,27 @@ def parse_transactions(text: str) -> List[Transaction]:
                 merchant=row["merchant"].strip(),
                 country=row["country"].strip().upper(),
                 channel=row["channel"].strip().lower(),
-                is_fraud=int(float(row["is_fraud"])),
+                is_fraud=is_fraud_raw,
             )
         except (ValueError, KeyError, AttributeError) as exc:
             raise ValueError(f"row {lineno}: {exc}") from exc
         if not txn.txn_id:
             raise ValueError(f"row {lineno}: empty txn_id")
+        if txn.txn_id in seen_ids:
+            raise ValueError(f"row {lineno}: duplicate txn_id {txn.txn_id!r}")
+        seen_ids.add(txn.txn_id)
         txns.append(txn)
     return txns
 
 
 def load_transactions(path: str) -> List[Transaction]:
-    with open(path, "r", encoding="utf-8", newline="") as fh:
-        return parse_transactions(fh.read())
+    try:
+        with open(path, "r", encoding="utf-8", newline="") as fh:
+            return parse_transactions(fh.read())
+    except IsADirectoryError:
+        raise ValueError(f"path is a directory, not a file: {path!r}")
+    except OSError as exc:
+        raise ValueError(f"cannot read {path!r}: {exc.strerror}") from exc
 
 
 # --------------------------------------------------------------------------
@@ -253,7 +267,7 @@ def build_ruleset(config: Optional[dict] = None,
     ]
     # Stash config so context builder can read it.
     for r in rules:
-        r.description = r.description  # noqa: keep dataclass mutable-friendly
+        r.description = r.description  # keep dataclass mutable-friendly  # noqa: B005
     if enable is not None:
         wanted = set(enable)
         unknown = wanted - {r.name for r in rules}

@@ -125,3 +125,59 @@ def test_cli_gate_fails_with_exit_one():
 def test_cli_gate_passes_with_recall_gate():
     res = _run_cli("backtest", DEMO, "--min-recall", "0.9")
     assert res.returncode == 0
+
+
+# --------------------------------------------------------------------------
+# Hardening: error handling and edge-case tests
+# --------------------------------------------------------------------------
+
+def test_cli_directory_path_exit2():
+    """Passing a directory instead of a file must print a clean error and exit 2."""
+    res = _run_cli("backtest", REPO_ROOT)
+    assert res.returncode == 2
+    assert res.stderr.strip(), "expected an error message on stderr"
+    assert "Traceback" not in res.stderr
+
+
+def test_cli_missing_file_exit2():
+    """Passing a nonexistent file must exit 2 with a clear message."""
+    res = _run_cli("backtest", os.path.join(REPO_ROOT, "nonexistent_file.csv"))
+    assert res.returncode == 2
+    assert "not found" in res.stderr or "error" in res.stderr.lower()
+    assert "Traceback" not in res.stderr
+
+
+def test_cli_gate_threshold_out_of_range_exit2():
+    """Gate thresholds outside [0, 1] must exit 2 with an error, not silently misfiring."""
+    res = _run_cli("backtest", DEMO, "--min-recall", "5.0")
+    assert res.returncode == 2
+    assert "error" in res.stderr.lower()
+    assert "Traceback" not in res.stderr
+
+
+def test_parse_rejects_duplicate_txn_id():
+    """Duplicate txn_id values corrupt velocity scoring and must be rejected."""
+    csv = (
+        "txn_id,account_id,amount,timestamp,merchant,country,channel,is_fraud\n"
+        "T1,A1,50.0,2026-06-01T09:00:00Z,M,US,online,0\n"
+        "T1,A2,60.0,2026-06-01T10:00:00Z,M,US,online,1\n"
+    )
+    with pytest.raises(ValueError, match="duplicate txn_id"):
+        parse_transactions(csv)
+
+
+def test_parse_rejects_invalid_is_fraud_label():
+    """is_fraud must be 0 or 1; arbitrary integers must raise ValueError."""
+    csv = (
+        "txn_id,account_id,amount,timestamp,merchant,country,channel,is_fraud\n"
+        "T1,A1,50.0,2026-06-01T09:00:00Z,M,US,online,99\n"
+    )
+    with pytest.raises(ValueError, match="is_fraud must be 0 or 1"):
+        parse_transactions(csv)
+
+
+def test_parse_empty_csv_returns_empty_list():
+    """A CSV with header but no data rows must return an empty list (not crash)."""
+    csv = "txn_id,account_id,amount,timestamp,merchant,country,channel,is_fraud\n"
+    txns = parse_transactions(csv)
+    assert txns == []
