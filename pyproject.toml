@@ -34,3 +34,6 @@ fraudlens = "fraudlens.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["fraudlens"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
