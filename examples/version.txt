@@ -1,0 +1,3 @@
+$ fraudlens-emit --version
+
+fraudlens 0.1.0

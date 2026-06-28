@@ -20,6 +20,72 @@ pip install cognis-fraudlens
 fraudlens scan .            # → prioritized findings in seconds
 ```
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ fraudlens-emit --version
+fraudlens 0.1.0
+```
+
+```console
+$ fraudlens-emit --help
+usage: fraudlens [-h] [--version] {backtest,rules} ...
+
+Replay transactions against pluggable fraud rules and report precision/recall, alert volume, and a caught-vs-missed diff.
+
+positional arguments:
+  {backtest,rules}
+    backtest        replay a labeled transaction CSV against the ruleset
+    rules           list available fraud rules
+
+options:
+  -h, --help        show this help message and exit
+  --version         show program's version number and exit
+
+Command-line interface for FRAUDLENS.
+
+Examples
+--------
+  # Backtest the default ruleset against a labeled CSV (human-readable table)
+  python -m fraudlens backtest transactions.csv
+
+  # JSON output for CI / piping into jq
+  python -m fraudlens backtest transactions.csv --format json | jq .metrics
+
+  # Only run a subset of rules
+  python -m fraudlens backtest transactions.csv --rules high_amount,velocity
+
+  # Override a threshold and fail CI if recall drops below 0.8
+  python -m fraudlens backtest transactions.csv \
+      --set high_amount_threshold=500 --min-recall 0.8
+
+  # List available rules
+  python -m fraudlens rules
+
+Exit codes
+----------
+  0  success and all gates (if any) passed
+  1  a quality gate (--min-recall / --min-precision / --max-alert-rate) failed
+  2  bad usage / unparseable input
+```
+
+```console
+$ fraudlens-emit rules
+Available fraud rules:
+  high_amount      transaction amount over threshold
+  velocity         rapid-fire transactions on one account
+  odd_hour         sizeable spend during overnight hours
+  foreign_geo      spend outside home country
+```
+
+> Blocks above are real `fraudlens` output — reproduce them from a clone.
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 1. **Install** the CLI:

@@ -1,0 +1,7 @@
+$ fraudlens-emit rules
+
+Available fraud rules:
+  high_amount      transaction amount over threshold
+  velocity         rapid-fire transactions on one account
+  odd_hour         sizeable spend during overnight hours
+  foreign_geo      spend outside home country
